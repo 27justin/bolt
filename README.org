@@ -1,0 +1,25 @@
+#+AUTHOR: Justin Andreas Lacoste <me@justin.cx>
+
+*Bolt* is a implementation of modal editing that tries to provide an instinctively correct modal editing interface without
+shadowing Emacs powerful ecosystem.
+
+This package is highly experimental, Bolt is constantly evolving and won't shy away from
+breaking keybindings, or functionality.
+
+* Modes
+
+*Bolt* implements a subset of (Neo-)vims modes, and a few additional ones.
+
+** Normal Mode
+
+Just like Vim, the Normal mode does not allow insertion of text. This mode is mainly centered around
+navigating your source-code and transforming it.
+
+** Insert Mode
+
+Insert mode enables the user to type and remove text within the buffer.
+
+** Visual Mode
+
+Visual mode allows users to quickly select and transform text.
+
