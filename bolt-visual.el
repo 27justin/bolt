@@ -17,7 +17,8 @@
        (bolt-visual-mode 1)
        (beginning-of-line)
        (exchange-point-and-mark)
-       (end-of-line))
+       (end-of-line)
+       (setq bolt-repeatable-command `(bolt-expand-line)))
 
 (defun bolt-select-word ()
        (interactive)
@@ -71,6 +72,18 @@
        (define-key map (kbd "d") #'bolt-delete)
 
        (define-key map (kbd "s") #'bolt-expand-line)
+
+       (define-key map (kbd "1") #'bolt-numeric-argument-1)
+       (define-key map (kbd "2") #'bolt-numeric-argument-2)
+       (define-key map (kbd "3") #'bolt-numeric-argument-3)
+       (define-key map (kbd "4") #'bolt-numeric-argument-4)
+       (define-key map (kbd "5") #'bolt-numeric-argument-5)
+       (define-key map (kbd "6") #'bolt-numeric-argument-6)
+       (define-key map (kbd "7") #'bolt-numeric-argument-7)
+       (define-key map (kbd "8") #'bolt-numeric-argument-8)
+       (define-key map (kbd "9") #'bolt-numeric-argument-9)
+       (define-key map (kbd "0") #'bolt-numeric-argument-0)
+
     map))
 
 (define-minor-mode bolt-visual-mode
