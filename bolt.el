@@ -57,8 +57,7 @@ This variable has to contain Elisp expression that can be evaluated.")
 
 (defun bolt-switch-mode (mode)
   "Switch to MODE, where MODE is a symbol that represents a bolt mode.
-  This may look something like `insert` or `visual`.  As such, this
-  function will disable all other modes and then enable `<mode>'"
+  As such, this function will disable all other modes and then enable `<mode>'"
    (interactive)
    (dolist (m bolt-modes)
      (when (and (symbol-value m) (not (eq m mode)))

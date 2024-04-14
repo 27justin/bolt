@@ -6,7 +6,6 @@
 ;; URL: https://github.com/27justin/bolt
 ;; Version: 0.1
 
-
 ;;; Commentary:
 
 ;; This file provides a repeatable overlay for visualizing the current
@@ -17,10 +16,7 @@
 ;; and highlight any subsequent matches, the user can then just hit the number
 ;; to repeat the jump.
 
-
 ;;; Code:
-
-
 
 (defvar bolt-highlight-overlays '()
   "The current visual overlays.")
@@ -32,8 +28,8 @@
 
 (defun bolt-highlight-overlay (positions)
   "Create a visual overlay from START to END."
-  (when (length> bolt-highlight-overlay 0)
-        (mapc 'delete-overlay bolt-highlight-overlay))
+  (when (length> bolt-highlight-overlays 0)
+        (mapc 'delete-overlay bolt-highlight-overlays))
 
         (dotimes (i (length positions))
             (let* ((start (nth i positions))

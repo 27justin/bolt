@@ -10,7 +10,8 @@
        (interactive)
        (deactivate-mark)
        (remove-hook 'deactivate-mark-hook 'bolt-exit-visual-mode t)
-       (bolt-switch-mode 'bolt-normal-mode))
+       (when bolt-visual-mode
+             (bolt-switch-mode 'bolt-normal-mode)))
 
 (defun bolt-select-line ()
        (interactive)

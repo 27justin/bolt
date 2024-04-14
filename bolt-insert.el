@@ -29,10 +29,10 @@
 (defun bolt-change ()
   (interactive)
   (if (region-active-p)
-      (progn (delete-region (region-beginning) (region-end))
+      (progn (kill-region (region-beginning) (region-end))
              (setq deactivate-mark nil))
-    (delete-char 1)
-    (bolt-switch-mode 'bolt-insert-mode)))
+    (delete-char 1))
+    (bolt-switch-mode 'bolt-insert-mode))
 
 (defun bolt-open-line-below ()
   (interactive)
