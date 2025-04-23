@@ -5,7 +5,7 @@
 ;; Author: Justin Andreas Lacoste <me@justin.cx>
 ;; URL: https://github.com/27justin/bolt
 ;; Version: 0.1
-;; Package-Requires: ((emacs "?"))
+;; Package-Requires: ()
 ;; Keywords: modal, editing, modal
 
 ;;; Commentary:
@@ -25,6 +25,35 @@ Upon successful expansion, the hook shall set the variable `bolt-numeric-arg-sta
 (defvar bolt-repeatable-command nil
 "Repeatable command to be executed after a numeric argument is expanded.
 This variable has to contain Elisp expression that can be evaluated.")
+
+(defvar bolt-disabled-modes '(
+        dired-mode
+        magit-mode
+        eshell-mode
+        shell-mode
+        term-mode
+        vterm-mode
+        comint-mode
+        magit-diff-mode
+        magit-status-mode
+        magit-log-mode
+        org-agenda-mode
+        minibuffer-mode
+        mu4e-main-mode
+        calendar-mode
+        grep-mode
+        occur-mode
+        compilation-mode
+        vundo-mode
+        calc-mode
+        mu4e-main-mode
+        mu4e-headers-mode
+        mu4e-view-mode
+        xref--xref-buffer-mode
+        git-rebase-mode
+        Buffer-menu-mode))
+
+
 
 ;;; Requirements
 (require 'bolt-visual)
@@ -142,6 +171,23 @@ This variable has to contain Elisp expression that can be evaluated.")
 
 (add-hook 'bolt-try-expand #'bolt-repeat-command)
 
+(defun bolt-zap (character)
+  "Zap to the nearest CHARACTER. Indiscriminate of direction."
+  (interactive "c")
+  (let ((cur (point))
+        (left nil)
+        (right nil))
+    (save-excursion
+      (setq left (search-backward (char-to-string character) nil t)))
+    (save-excursion
+      (setq right (search-forward (char-to-string character) nil t)))
+    (if (and left right)
+        (progn
+          (if (< (abs (- cur left)) (abs (- cur right)))
+              (goto-char left)
+            (goto-char (- right 1))))
+      (if left (goto-char left)
+        (if right (goto-char right))))))
 
 (defun bolt-switch-to-normal-mode ()
   "Switch to normal mode."
@@ -153,7 +199,10 @@ This variable has to contain Elisp expression that can be evaluated.")
     (bolt-insert-mode -1))
   (bolt-normal-mode 1))
 
-(define-globalized-minor-mode bolt-mode bolt-normal-mode
-  (not (or (minibufferp) (derived-mode-p 'special-mode) (derived-mode-p 'magit-status-mode))))
+(define-globalized-minor-mode bolt-global-mode bolt-normal-mode
+(lambda()
+    (when (not (seq-some (lambda(mode) (derived-mode-p mode)) bolt-disabled-modes))
+    (bolt-normal-mode 1))))
+
 
 (provide 'bolt)

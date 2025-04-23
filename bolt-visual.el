@@ -29,6 +29,15 @@
          (exchange-point-and-mark)
          (goto-char (cdr bounds))))
 
+(defun bolt-select-symbol ()
+  "Select the symbol (word-like entity) at point, ignoring punctuation and including underscores."
+  (interactive)
+  (bolt-visual-mode 1)
+  (let ((bounds (bounds-of-thing-at-point 'symbol)))
+    (when bounds
+      (goto-char (car bounds))
+      (set-mark (cdr bounds)))))
+
 (defun bolt-insert-at-lower ()
        (interactive)
        (bolt-visual-mode -1)
@@ -53,6 +62,11 @@
            (forward-line)
            (forward-line -1)))
 
+(defun bolt-visual-delete ()
+       (interactive)
+       (bolt-delete)
+       (bolt-exit-visual-mode))
+
 (defvar bolt-visual-mode-hook nil)
 (defvar bolt-visual-mode-map
   (let ((map (make-keymap)))
@@ -62,17 +76,30 @@
        (define-key map (kbd "h") #'bolt-backward-char)
        (define-key map (kbd "j") #'bolt-forward-line)
        (define-key map (kbd "k") #'bolt-backward-line)
+       (define-key map (kbd "J") #'forward-paragraph)
+       (define-key map (kbd "K") #'backward-paragraph)
        (define-key map (kbd "l") #'bolt-forward-char)
        (define-key map (kbd "w") #'bolt-select-word)
+       (define-key map (kbd "W") #'bolt-select-symbol)
        (define-key map (kbd "b") #'bolt-backward-word)
        (define-key map (kbd "e") #'bolt-forward-word)
        (define-key map (kbd "g") #'bolt-exit-visual-mode)
        (define-key map (kbd "i") #'bolt-insert-at-lower)
-       (define-key map (kbd "a") #'bolt-insert-at-upper)
+
+       ;; Commented out, I don't really use "a" anywhere, replaced with action transient
+       ;; (define-key map (kbd "a") #'bolt-insert-at-upper)
+
        (define-key map (kbd "c") #'bolt-change)
-       (define-key map (kbd "d") #'bolt-delete)
+       (define-key map (kbd "d") #'bolt-visual-delete)
 
        (define-key map (kbd "s") #'bolt-expand-line)
+
+       (define-key map (kbd "u") #'undo)
+
+       (define-key map (kbd "f") #'bolt-find)
+       (define-key map (kbd "F") #'bolt-find-backward)
+
+       (define-key map (kbd "m") #'back-to-indentation)
 
        (define-key map (kbd "1") #'bolt-numeric-argument-1)
        (define-key map (kbd "2") #'bolt-numeric-argument-2)
